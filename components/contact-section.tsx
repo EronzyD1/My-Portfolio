@@ -17,18 +17,60 @@ export function ContactSection() {
     subject: '',
     message: '',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [formStatus, setFormStatus] = useState<{
+    type: 'idle' | 'success' | 'error'
+    message: string
+  }>({ type: 'idle', message: '' })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted:', formData)
-    // Reset form
-    setFormData({ name: '', email: '', subject: '', message: '' })
+    setIsSubmitting(true)
+    setFormStatus({ type: 'idle', message: '' })
+
+    const combinedMessage = `Subject: ${formData.subject}\n\n${formData.message}`
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: combinedMessage.trim(),
+        }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+
+      if (!response.ok) {
+        const errorMessage =
+          data?.error ||
+          (data?.errors
+            ? Object.values(data.errors).join(' ')
+            : 'Something went wrong. Please try again.')
+        setFormStatus({ type: 'error', message: errorMessage })
+        return
+      }
+
+      setFormStatus({
+        type: 'success',
+        message: 'Thanks for your message! I will get back to you soon.',
+      })
+      setFormData({ name: '', email: '', subject: '', message: '' })
+    } catch {
+      setFormStatus({
+        type: 'error',
+        message: 'Unable to send your message right now. Please try again later.',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const contactInfo = [
@@ -225,10 +267,21 @@ export function ContactSection() {
                       />
                     </div>
 
-                    <Button type="submit" className="w-full" size="lg">
+                    <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
                       <Send className="h-4 w-4 mr-2" />
-                      Send Message
+                      {isSubmitting ? 'Sending...' : 'Send Message'}
                     </Button>
+                    {formStatus.type !== 'idle' ? (
+                      <p
+                        className={`text-sm ${
+                          formStatus.type === 'success'
+                            ? 'text-emerald-600'
+                            : 'text-destructive'
+                        }`}
+                      >
+                        {formStatus.message}
+                      </p>
+                    ) : null}
                   </form>
                 </CardContent>
               </Card>
