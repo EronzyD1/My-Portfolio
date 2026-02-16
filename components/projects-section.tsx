@@ -4,7 +4,7 @@ import { motion, type Variants } from 'framer-motion'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { Github, ExternalLink, MapPin, MessageCircle, Calendar, Briefcase } from 'lucide-react'
+import { Github, ExternalLink, MapPin, MessageCircle, Cpu, Briefcase } from 'lucide-react'
 
 export function ProjectsSection() {
   const containerVariants: Variants = {
@@ -55,15 +55,15 @@ export function ProjectsSection() {
       featured: true,
     },
     {
-      title: 'Calendar App',
-      subtitle: 'Smart Scheduling & Productivity Platform',
-      description: 'Scheduling and productivity with clear event structure and validation.',
-      problem: 'Reduce friction in planning and managing recurring events.',
-      impact: 'Structured event data, validation, and user activity patterns.',
-      tech: ['React', 'TypeScript', 'Firebase'],
+      title: 'SpecTrek',
+      subtitle: 'PC-Game Compatibility Analyzer',
+      description: 'An advanced desktop utility that analyzes hardware specifications and cross-references them with game requirements to determine PC compatibility.',
+      problem: 'Help users determine PC compatibility with games before purchasing or installing.',
+      impact: 'Real-time hardware detection and heuristic performance ranking.',
+      tech: ['Electron', 'React', 'Node.js', 'Tailwind CSS', 'SystemInformation Library'],
       github: '#',
       demo: '#',
-      icon: Calendar,
+      icon: Cpu,
       featured: true,
     },
     {
