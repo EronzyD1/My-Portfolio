@@ -74,7 +74,7 @@ export function ProjectsSection() {
       impact: 'Opportunity matching concepts; focus on user intent and scalable backend.',
       tech: ['MongoDB', 'Express', 'React', 'Node.js', 'Tailwind CSS'],
       github: '#',
-      demo: 'jobhubyouth.vercel.app',
+      demo: 'https://jobhubyouth.vercel.app/',
       icon: Briefcase,
       featured: true,
     },
